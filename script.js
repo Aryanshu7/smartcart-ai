@@ -1,5 +1,7 @@
 const URL = "./model/";
 
+window.tmImage = tmImage;
+
 let model, webcam, maxPredictions;
 let products = {};
 
