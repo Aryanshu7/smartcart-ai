@@ -1,6 +1,4 @@
-const URL = "./model/";
-
-window.tmImage = tmImage;
+const URL = "model/";
 
 let model, webcam, maxPredictions;
 let products = {};
@@ -11,7 +9,6 @@ async function loadProducts() {
 }
 
 async function init() {
-    console.log(tmImage);
     alert("Loading model...");
 
     await loadProducts();
