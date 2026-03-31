@@ -11,6 +11,7 @@ async function loadProducts() {
 }
 
 async function init() {
+    console.log(tmImage);
     alert("Loading model...");
 
     await loadProducts();
