@@ -1,0 +1,32 @@
+{
+  "Maggie": {
+    "price": "₹14",
+    "calories": "320 kcal",
+    "alternative": "Yippee",
+    "offer": "Buy 2 Get 1"
+  },
+  "Coca Cola": {
+    "price": "₹40",
+    "calories": "150 kcal",
+    "alternative": "Pepsi",
+    "offer": "10% Discount"
+  },
+  "Lays": {
+    "price": "₹20",
+    "calories": "180 kcal",
+    "alternative": "Kurkure",
+    "offer": "Free Dip"
+  },
+  "Oreo": {
+    "price": "₹30",
+    "calories": "210 kcal",
+    "alternative": "Good Day",
+    "offer": "5% Discount"
+  },
+  "Soap": {
+    "price": "₹35",
+    "calories": "N/A",
+    "alternative": "Lux Soap",
+    "offer": "Buy 3 Get 1"
+  }
+}
