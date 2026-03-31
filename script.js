@@ -1,15 +1,16 @@
-const URL = "model/";
+const URL = "./model/";
 
 let model, webcam, maxPredictions;
-let productsData = {};
-let lastProduct = "";
+let products = {};
 
 async function loadProducts() {
     const response = await fetch("products.json");
-    productsData = await response.json();
+    products = await response.json();
 }
 
 async function init() {
+    alert("Loading model...");
+
     await loadProducts();
 
     const modelURL = URL + "model.json";
@@ -22,7 +23,6 @@ async function init() {
     await webcam.setup();
     await webcam.play();
 
-    document.getElementById("webcam-container").innerHTML = "";
     document.getElementById("webcam-container").appendChild(webcam.canvas);
 
     window.requestAnimationFrame(loop);
@@ -37,37 +37,36 @@ async function loop() {
 async function predict() {
     const prediction = await model.predict(webcam.canvas);
 
-    let highest = prediction[0];
+    let highest = 0;
+    let productName = "";
 
     for (let i = 0; i < maxPredictions; i++) {
-        if (prediction[i].probability > highest.probability) {
-            highest = prediction[i];
+        if (prediction[i].probability > highest) {
+            highest = prediction[i].probability;
+            productName = prediction[i].className;
         }
     }
 
-    if (highest.probability > 0.85) {
-        if (lastProduct !== highest.className) {
-            lastProduct = highest.className;
-            showProductInfo(highest.className);
-        }
+    if (highest > 0.8) {
+        showProduct(productName);
     }
 }
 
-function showProductInfo(product) {
-    let info = productsData[product];
+function showProduct(name) {
+    if (products[name]) {
+        const p = products[name];
+        document.getElementById("product-info").innerHTML =
+            "<h3>" + name + "</h3>" +
+            "<p>Price: " + p.price + "</p>" +
+            "<p>Calories: " + p.calories + "</p>" +
+            "<p>Alternative: " + p.alternative + "</p>" +
+            "<p>Offer: " + p.offer + "</p>";
 
-    if (info) {
-        document.getElementById("productName").innerText = "Product: " + product;
-        document.getElementById("price").innerText = "Price: " + info.price;
-        document.getElementById("calories").innerText = "Calories: " + info.calories;
-        document.getElementById("alternative").innerText = "Alternative: " + info.alternative;
-        document.getElementById("offer").innerText = "Offer: " + info.offer;
-
-        speak(product + " costs " + info.price + ". Alternative is " + info.alternative);
+        speak(name + " costs " + p.price + ". Offer " + p.offer);
     }
 }
 
 function speak(text) {
-    let speech = new SpeechSynthesisUtterance(text);
-    window.speechSynthesis.speak(speech);
+    const speech = new SpeechSynthesisUtterance(text);
+    speechSynthesis.speak(speech);
 }
