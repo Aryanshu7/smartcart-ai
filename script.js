@@ -2,6 +2,7 @@ const URL = "model/";
 
 let model, webcam, maxPredictions;
 let productsData = {};
+let lastProduct = "";
 
 async function loadProducts() {
     const response = await fetch("products.json");
@@ -24,8 +25,9 @@ async function init() {
 
     window.requestAnimationFrame(loop);
 
-    document.getElementById("webcam-container").innerHTML = "";
-    document.getElementById("webcam-container").appendChild(webcam.canvas);
+    const container = document.getElementById("webcam-container");
+    container.innerHTML = "";
+    container.appendChild(webcam.canvas);
 }
 
 async function loop() {
@@ -45,8 +47,11 @@ async function predict() {
         }
     }
 
-    if (highest.probability > 0.8) {
-        showProductInfo(highest.className);
+    if (highest.probability > 0.85) {
+        if (lastProduct !== highest.className) {
+            lastProduct = highest.className;
+            showProductInfo(highest.className);
+        }
     }
 }
 
@@ -60,11 +65,14 @@ function showProductInfo(product) {
         document.getElementById("alternative").innerText = "Alternative: " + info.alternative;
         document.getElementById("offer").innerText = "Offer: " + info.offer;
 
-        speak(product + " costs " + info.price + ". Alternative is " + info.alternative);
+        speak(product + " costs " + info.price + ". Alternative product is " + info.alternative);
     }
 }
 
 function speak(text) {
     let speech = new SpeechSynthesisUtterance(text);
+    speech.rate = 1;
+    speech.pitch = 1;
+    speech.volume = 1;
     window.speechSynthesis.speak(speech);
 }
