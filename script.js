@@ -1,4 +1,4 @@
-const URL = "model/";
+const URL = "https://aryanshu7.github.io/smartcart-ai/model/";
 
 let model, webcam, maxPredictions;
 let products = {};
